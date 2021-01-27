@@ -1,18 +1,18 @@
 'use strict';
-
-///////////////////////////////////////
-// Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+///////////////////////////////////////
+// 모달 창
 const openModal = function () {
   modal.classList.remove('hidden');
   overlay.classList.remove('hidden');
 };
-
 const closeModal = function () {
   modal.classList.add('hidden');
   overlay.classList.add('hidden');
@@ -30,54 +30,58 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// /////////////////////////////////////////
-// Element를 추가하는 방법
-const header = document.querySelector('.header');
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-message.textContent =
-  'We use cookied for improved functionality and analytics.';
-message.innerHTML =
-  'We use cookied for improved functionality and analytics. <button class="btn btn--close--cookie">Got it</button>';
+///////////////////////////////////////
+// 버튼 스크롤링
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coords = section1.getBoundingClientRect();
 
-// header.prepend(message);
-header.append(message);
-// header.before(message);
-header.after(message);
-
-// /////////////////////////////////////////
-// Element를 삭제하는 방법
-document.querySelector('.btn--close--cookie').addEventListener('click', () => {
-  // message.remove();
-  message.parentElement.removeChild();
+  section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-// /////////////////////////////////////////
-// 스타일 적용하기
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
+///////////////////////////////////////
+// removeEventListener
+const h1 = document.querySelector('h1');
+const alertH1 = function (e) {
+  alert('addEventListener: Great! you are reading the heading :D');
+};
 
-console.log(message.style.color);
-console.log(message.style.backgroundColor);
+h1.addEventListener('mouseenter', alertH1);
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
 
-console.log(getComputedStyle(message).height);
-console.log(getComputedStyle(message).color);
+///////////////////////////////////////
+// 페이지 네비게이션
 
-// getComputedStyle
-message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
 
-// setProperty
-document.documentElement.style.setProperty('--color-primary', 'orangered');
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({
+      behavior: 'smooth',
+    });
+  }
+});
 
-// /////////////////////////////////////////
-// 속성(Attributes) 가져오기
-const logo = document.querySelector('.nav__logo');
-console.log(logo.alt);
-console.log(logo.src);
-console.log(logo.className);
+///////////////////////////////////////
+// 탭 컴포넌트
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
-// Non-standard
-console.log(logo.designer); // -> undefined
-console.log(logo.getAttribute('designer'));
-logo.setAttribute('company', 'Banklist');
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+  // console.log(clicked);
+
+  // 오류 메시지 처리
+  if (!clicked) return;
+
+  // Active Tab Button
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(t => t.classList.remove('operations__content--active'));
+  clicked.classList.add('operations__tab--active');
+
+  // Active Tab content
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
