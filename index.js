@@ -1,10 +1,10 @@
 ('use strict');
 import './component/nav.js';
 import './component/modal.js';
-import './view/button.js';
 import './component/tab.js';
+import './component/slider.js';
+import './view/button.js';
 import './view/image.js';
-import { elements } from './view/base.js';
 
 //////////////////////////////////////////////////////////////////////////////
 // removeEventListener
@@ -32,5 +32,5 @@ const sectionObserver = new IntersectionObserver(revealSection, revealOption);
 const allSection = document.querySelectorAll('.section');
 allSection.forEach(function (section) {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
 });
