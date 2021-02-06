@@ -1,5 +1,6 @@
 ('use strict');
 import './component/nav.js';
+import './component/section.js';
 import './component/modal.js';
 import './component/tab.js';
 import './component/slider.js';
@@ -17,20 +18,17 @@ h1.addEventListener('mouseenter', alertH1);
 setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
 
 //////////////////////////////////////////////////////////////////////////////
-// 섹션 Reveal 애니메이션
-const revealSection = function (entries, observer) {
-  const [entry] = entries;
-  // console.log(entry);
-  if (!entry.isIntersecting) return;
-  entry.target.classList.remove('section--hidden');
-  observer.unobserve(entry.target);
-};
-const revealOption = { root: null, threshold: 0.15 };
-
-const sectionObserver = new IntersectionObserver(revealSection, revealOption);
-
-const allSection = document.querySelectorAll('.section');
-allSection.forEach(function (section) {
-  sectionObserver.observe(section);
-  // section.classList.add('section--hidden');
+/* document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML parsed and DOM tree built!', e);
 });
+
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+});
+
+window.addEventListener('beforeunload', function (e) {
+  e.preventDefault();
+  console.log(e);
+  e.returnValue = '';
+});
+ */
