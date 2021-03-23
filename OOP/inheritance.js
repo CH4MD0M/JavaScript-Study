@@ -163,7 +163,7 @@ const jay = Object.create(StudentProto);
 jay.init('jay', 2010, 'Computer Science');
 jay.introduce();
 jay.calcAge();
-*/
+
 
 // ////////////////////////////////////////////////////////////////
 // 1)Public fields
@@ -198,10 +198,12 @@ class Account {
   // 입금
   deposit(val) {
     this.#movements.push(val);
+    return this;
   }
   // 출금
   withdraw(val) {
     this.deposit(-val);
+    return this;
   }
 
   requestLoan(val) {
@@ -209,6 +211,7 @@ class Account {
     if (this._approveLoan(val)) {
       this.deposit(val);
       console.log(`Loan approved`);
+      return this;
     }
   }
   static helper() {
@@ -229,9 +232,81 @@ acc1.withdraw(140);
 acc1.requestLoan(1000);
 console.log(acc1.getMovements());
 console.log(acc1);
+Account.helper();
 
 // console.log(acc1.#movements); // Uncaught SyntaxError: Private field '#movements' must be declared in an enclosing class
 // console.log(acc1.#pin); // Uncaught SyntaxError: Private field '#pin' must be declared in an enclosing class
 // --> '#' 태그를 사용하여 private fields로 선언하면 프로퍼티가 보호(캡슐화)된다
 
-Account.helper();
+// ////////////////////////////////////////////////////////////////
+// Chaning
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
+console.log(acc1.getMovements());
+*/
+
+// ////////////////////////////////////////////////////////////////
+// Coding Challenge #4
+
+class Carcl {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make}는 현재 ${this.speed}km/h로 달리고 있다.`);
+  }
+
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make}는 현재 ${this.speed}km/h로 달리고 있다.`);
+    return this;
+  }
+
+  get speedUS() {
+    return `${this.make}는 현재 ${this.speed / 1.6}mi/h로 달리고 있다.`;
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+
+class EVCl extends Carcl {
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+
+  chargeBattery(chargeTo) {
+    this.#charge = chargeTo;
+    return this;
+  }
+
+  accelerate() {
+    this.speed += 20;
+    this.#charge--;
+    console.log(
+      `${this.make}는 현재 ${this.speed}km/h로 달리고 있고, 배터리는 ${
+        this.#charge
+      }이다.`
+    );
+
+    return this;
+  }
+}
+
+const rivian = new EVCl('Rivian', 120, 23);
+console.log(rivian);
+// console.log(rivian.#charge);
+rivian
+  .accelerate()
+  .accelerate()
+  .accelerate()
+  .brake()
+  .chargeBattery(50)
+  .accelerate();
+
+console.log(rivian.speedUS);
