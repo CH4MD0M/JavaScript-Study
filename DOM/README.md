@@ -1,2 +1,0 @@
-# JavaScript
- JS remind
